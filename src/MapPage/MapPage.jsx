@@ -47,7 +47,7 @@ const MapPage = ({ url }) => {
   };
 
   const buildGrid = (rows) => {
-    const entries = rows.map(([boothNumber, r, c, rowSpan, colSpan, companyName, displayName, catagory]) => ({
+    const entries = rows.map(([boothNumber, r, c, rowSpan, colSpan, companyName, displayName, catagory, type, color]) => ({
       boothNumber,
       row: parseInt(r, 10),
       col: parseInt(c, 10),
@@ -55,7 +55,9 @@ const MapPage = ({ url }) => {
       colSpan: parseInt(colSpan, 10),
       companyName,
       displayName,
-      catagory
+      catagory,
+      type,
+      color
     }));
 
     // Find total dimensions
@@ -89,7 +91,7 @@ const MapPage = ({ url }) => {
   return (
     <div>
       <h2>Map</h2>
-      <table border="1" cellPadding="6" style={{ borderCollapse: 'collapse'}}>
+      <table border="0" cellPadding="6" style={{ borderCollapse: 'collapse'}}>
         <tbody>
           {mapData.map((row, rowIndex) => (
             <tr key={rowIndex} style={{height: '4em', maxHeight: '4em'}}>
@@ -102,7 +104,7 @@ const MapPage = ({ url }) => {
                     key={colIndex}
                     rowSpan={cell.rowSpan}
                     colSpan={cell.colSpan}
-                    style={{ background: '#e0f7fa', textAlign: 'center', border: '1px solid black', position: 'relative', ...cellStyle }}
+                    style={{ background: `${cell.color}aa`, textAlign: 'center', border: '1px solid black', position: 'relative', ...cellStyle }}
                   >
                     <div style={{...mapTile}}>
                         <div style={{float: 'right', fontSize: '8px', fontWeight: 'bold', position: 'absolute', top: 0, right: 0, padding: '4px'}}>{cell.boothNumber}</div>
