@@ -4,18 +4,21 @@ import './index.css'
 import App from './App.jsx'
 import NotFound from './NotFound.jsx'
 import MapPage from './MapPage/MapPage.jsx'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'  
+import { HashRouter, Route, Routes, Link } from 'react-router-dom'  
 
 const baseURL = '/schedule-component';
 
-const router = createBrowserRouter([
-  {path: `${baseURL}/`, element: <App/>},
-  {path: `${baseURL}/map`, element: <MapPage url='https://docs.google.com/spreadsheets/d/e/2PACX-1vQEqqtCdGQFdyqlq_5c-Om7rmG24kqHTbwBUaGBlBuig_nk-sFmy3PXhfZV6QpiZGGs5ppbntozwIpW/pub?gid=480788257&single=true&output=csv' />},
-  {path: '*', element: <NotFound />}
-]);
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <HashRouter>
+      <Link to="/schedule">Schedule</Link>
+      <Link to="/map">Map</Link>
+      <Routes>
+        <Route path= "/schedule" element= {<App/>} />
+        <Route path= "/map" element= {<MapPage url='https://docs.google.com/spreadsheets/d/e/2PACX-1vQEqqtCdGQFdyqlq_5c-Om7rmG24kqHTbwBUaGBlBuig_nk-sFmy3PXhfZV6QpiZGGs5ppbntozwIpW/pub?gid=480788257&single=true&output=csv' />}/>
+        <Route index element= {<div>Hello</div>}/>
+      </Routes>
+    </HashRouter>
   </StrictMode>,
 )
