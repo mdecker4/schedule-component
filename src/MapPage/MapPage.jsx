@@ -104,7 +104,7 @@ const MapPage = ({ url }) => {
                     key={colIndex}
                     rowSpan={cell.rowSpan}
                     colSpan={cell.colSpan}
-                    style={{ background: `${cell.color}aa`, textAlign: 'center', border: '1px solid black', position: 'relative', ...cellStyle }}
+                    style={{ background: `${cell.color}`, textAlign: 'center', border: '1px solid black', position: 'relative', ...cellStyle }}
                   >
                     <div style={{...mapTile}}>
                         <div style={{float: 'right', fontSize: '8px', fontWeight: 'bold', position: 'absolute', top: 0, right: 0, padding: '4px'}}>{cell.boothNumber}</div>

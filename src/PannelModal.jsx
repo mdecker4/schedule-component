@@ -19,9 +19,8 @@ const style = {
   maxWidth: 700
 };
 
-const PannelModal = ({ open, handleClose, content }) => {
-
-  return (
+const PannelModal = ({ open, handleClose, panel }) => {
+if(panel != null)  {return (
     <div>
       <Modal
         aria-labelledby="transition-modal-title"
@@ -39,23 +38,22 @@ const PannelModal = ({ open, handleClose, content }) => {
         <Fade in={open}>
           <Box sx={style}>
             <Typography id="transition-modal-title" variant="h6" component="h2">
-                {console.log(content)}
-              {content[0]}
+              {panel.panelName}
             </Typography>
             <Typography id="transition-modal-description" sx={{ mt: 2 }} style={{marginBottom: '1em'}}>
-              {content[1]}
+              {panel.description}
             </Typography>
             <Typography id="transition-modal-runner" style={{float: "left", fontSize: '.75em'}}>
-                {`Panel Runner: ${content[2]}`}
+                {`Panel Runner: ${panel.panelRunner}`}
             </Typography>
             <Typography id="transition-modal-age-rating" style={{float: "right", fontSize: '.75em'}}>
-                {`Age Rating: ${content[6]}`}
+                {`Age Rating: ${panel.ageRating}`}
             </Typography>
           </Box>
         </Fade>
       </Modal>
     </div>
-  );
+  )};
 }
 
 export default PannelModal;

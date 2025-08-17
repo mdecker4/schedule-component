@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PannelModal from './PannelModal';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
+import { convertMilitaryTime } from './util';
 
 const SchedulePage = ({ url }) => {
   const [scheduleMap, setScheduleMap] = useState({});
@@ -117,12 +118,6 @@ const SchedulePage = ({ url }) => {
     return { schedule, slots: fullSlots };
   };
 
-  const convertMilitaryTime = (time) => {
-    const h = time.split(':')[0];
-    const m = time.split(':')[1];
-    return `${h > 12 ? h - 12 : h}:${m} ${h > 12 ? 'PM' : 'AM'}`;
-  }
-
   const generateTimeSlots = (start, count, duration) => {
     const slots = [];
     let [h, m] = start.split(':').map(Number);
@@ -150,7 +145,17 @@ const SchedulePage = ({ url }) => {
     setModal(!modalOpen);
     if(!!cell)
     {
-        setModalContent(cell);
+        setModalContent({
+                panelName: cell[0],
+                description: cell[1],
+                panelRunner: cell[2],
+                startTime: cell[3],
+                duration: cell[4],
+                location: cell[5],
+                ageRating: cell[6],
+                displayColor: cell[7],
+                spanAll: cell[8]
+            });
     }
   }
 
@@ -160,30 +165,30 @@ const SchedulePage = ({ url }) => {
   return (
     <div style={{width: '100%'}}>   
       <h2>Schedule</h2>
-      <PannelModal handleClose={toggleModal} open={modalOpen && !!modalContent} content={modalContent}></PannelModal>
+      <PannelModal handleClose={toggleModal} open={modalOpen && !!modalContent} panel={modalContent}></PannelModal>
       <table border="1" cellPadding="2" style={{ borderCollapse: 'collapse', width: '100%', height: '100%'}}>
         <thead>
           <tr>
-            <th>Time</th>
+            <th style={{width: '30px'}}>Time</th>
             {columns.map(col => (
-              <th key={col}>{col}</th>
+              <th style={{width: '200px'}} key={col}>{col}</th>
             ))}
           </tr>
         </thead>
         <tbody>
           {timeSlots.map((time) => (
-            <tr key={time} style={{height: '50px'}}>
+            <tr key={time} style={{height: '100px', maxHeight: '100px'}}>
               <td><strong>{convertMilitaryTime(time)}</strong></td>
               {columns.map((col, colIndex) => {
                 const cell = scheduleMap[time]?.[col];
                 if (cell?.fullWidth && colIndex != 0) return null;
                 if (cell?.content) {
                   return (
-                    <td key={col} rowSpan={cell.span} colSpan={cell.fullWidth && colIndex === 0 ? columns.length : null}>
+                    <td style={{maxHeight: '100px'}} key={col} rowSpan={cell.span} colSpan={cell.fullWidth && colIndex === 0 ? columns.length : null}>
                       {
                         <>
                             <Button onClick={() => toggleModal(cell.content)} style={{...panelEntryStyle, backgroundColor: cell.content[7]}}>
-                                <Typography variant='h6'>
+                                <Typography variant='h6' >
                                     {cell.content[0]}
                                 </Typography>
                             </Button>
