@@ -188,9 +188,9 @@ const SchedulePage = ({ url }) => {
                       {
                         <>
                             <Button onClick={() => toggleModal(cell.content)} style={{...panelEntryStyle, backgroundColor: cell.content[7]}}>
-                                <Typography variant='h6' >
+                                <div className='LGF' style={{ fontSize: '1.2em' }} >
                                     {cell.content[0]}
-                                </Typography>
+                                </div>
                             </Button>
                         </>
                       }

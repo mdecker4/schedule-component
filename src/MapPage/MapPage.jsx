@@ -108,7 +108,7 @@ const MapPage = ({ url }) => {
                   >
                     <div style={{...mapTile}}>
                         <div style={{float: 'right', fontSize: '8px', fontWeight: 'bold', position: 'absolute', top: 0, right: 0, padding: '4px'}}>{cell.boothNumber}</div>
-                        <h6 style={{float: 'left', width: '100%', fontSize: '.8em', wordWrap: 'break-word', margin: 0}}>
+                        <h6 style={{float: 'left', width: '100%', fontSize: '.8em', wordWrap: 'break-word', margin: 0}} className='LGF'>
                             {
                                 cell.displayName ? 
                                     cell.displayName.length <= 33 ? cell.displayName : `${cell.displayName.slice(0, 30)}...` :

@@ -14,6 +14,7 @@ const ScheduleListPage = ({ url }) => {
   const [modalOpen, setModal] = useState(false);
   const [modalContent, setModalContent] = useState();
 
+  const textShadowStyle = '-1px -1px 0 #ffffffff, 1px -1px 0 #ffffffff, -1px 1px 0 #ffffffff, 1px 1px 0 #ffffffff'
 
   const panelEntryStyle = {
     width: '100%', 
@@ -65,36 +66,36 @@ const ScheduleListPage = ({ url }) => {
         {
             times.map(time => 
                 <div>
-                    <Paper elevation={3} style={{padding: '1em', margin: '.25em', backgroundColor: 'lightgrey', float: 'left', width: '95%'}}>
+                    <div style={{ marginBottom: '.5em', backgroundColor: `${times.indexOf(time)%2 === 0 ? '#380879' : '#8305ab'}`, borderRadius: '10px', float: 'left', width: '100%'}}>
                         <div style={{float: 'left',  width: '50%'}}>
-                            <div style={{float: 'left', fontSize: '1.5em'}}>
+                            <div className='LGF' style={{float: 'left', fontSize: '1.75em', marginLeft: '.5em', textShadow: textShadowStyle }}>
                                 {convertMilitaryTime(time)}
                             </div>
                         </div>
                     {
                         groupedSchedule[time].map(panel => {
                             return(
-                                <Paper elevation={3} style={{float: 'left', width: '95%', margin: '.25em', padding: '1em', backgroundColor: `${panel.displayColor}`, borderRadius: '10px'}}>
-                                    <div style={{float: 'left', fontSize: '1.5em'}}>
+                                <Paper elevation={3} style={{float: 'left', width: '90%', marginBottom: '3%', marginLeft: '1%', padding: '1em', backgroundColor: `${panel.displayColor}`, borderRadius: '10px'}}>
+                                    <div className='LGF' style={{float: 'left', fontSize: '1.5em', textShadow: textShadowStyle}}>
                                         {panel.panelName}
                                     </div>
-                                    <div style={{float: 'right', fontSize: '1.5em'}}>
+                                    <div className='LGF' style={{float: 'right', fontSize: '1.5em'}}>
                                         Panel Room: {panel.location}
                                     </div>
-                                    <Paper style={{float: 'left', width: '100%', backgroundColor:'white', borderRadius: '10px'}}>
+                                    <Paper style={{float: 'left', width: '95%', backgroundColor:'white', borderRadius: '10px'}}>
                                         {panel.description}
                                     </Paper>
                                     <div style={{float: 'left', fontSize: '.75em'}}>
-                                        Duration: {panel.duration} minutes
+                                        <b>Duration:</b> {panel.duration} minutes
                                     </div>
                                     <div style={{float: 'right', fontSize: '.75em'}}>
-                                        Age rating: {panel.ageRating}
+                                        <b>Age rating:</b> {panel.ageRating}
                                     </div>
                                 </Paper>
                             )
                         })
                     }
-                    </Paper>
+                    </div>
                 </div>
             )
         }       

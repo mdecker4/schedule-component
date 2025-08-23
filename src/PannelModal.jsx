@@ -37,9 +37,9 @@ if(panel != null)  {return (
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
+            <div id="transition-modal-title" className='LGF' style={{ fontSize: '1.5em' }}>
               {panel.panelName}
-            </Typography>
+            </div>
             <Typography id="transition-modal-description" sx={{ mt: 2 }} style={{marginBottom: '1em'}}>
               {panel.description}
             </Typography>
