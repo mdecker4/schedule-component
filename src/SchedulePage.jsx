@@ -166,7 +166,7 @@ const SchedulePage = ({ url }) => {
     <div style={{width: '100%'}}>   
       <h2>Schedule</h2>
       <PannelModal handleClose={toggleModal} open={modalOpen && !!modalContent} panel={modalContent}></PannelModal>
-      <table border="1" cellPadding="2" style={{ borderCollapse: 'collapse', width: '100%', height: '100%'}}>
+      <table border="1" cellPadding="2" style={{ borderCollapse: 'collapse', width: '100%', height: '100%', backgroundColor: 'white'}}>
         <thead>
           <tr>
             <th style={{width: '30px'}}>Time</th>
