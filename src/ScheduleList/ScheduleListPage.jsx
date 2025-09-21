@@ -79,11 +79,14 @@ const ScheduleListPage = ({ url }) => {
                                     <div className='LGF' style={{float: 'left', fontSize: '1.5em', textShadow: textShadowStyle}}>
                                         {panel.panelName}
                                     </div>
-                                    <div className='LGF' style={{float: 'right', fontSize: '1.5em'}}>
-                                        Panel Room: {panel.location}
+                                    <div className='LGF' style={{float: 'right', fontSize: '1em', marginTop: '.25em'}}>
+                                        {panel.location.length == 1 ? `Panel Room ${panel.location}` : panel.location}
+                                        
                                     </div>
                                     <Paper style={{float: 'left', width: '95%', backgroundColor:'white', borderRadius: '10px'}}>
                                         {panel.description}
+                                        <br/>
+                                        Panel Runner: {panel.panelRunner}
                                     </Paper>
                                     <div style={{float: 'left', fontSize: '.75em'}}>
                                         <b>Duration:</b> {panel.duration} minutes
