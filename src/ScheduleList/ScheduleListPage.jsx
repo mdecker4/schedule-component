@@ -66,7 +66,7 @@ const ScheduleListPage = ({ url }) => {
         {
             times.map(time => 
                 <div>
-                    <div style={{ marginBottom: '.5em', backgroundColor: `${times.indexOf(time)%2 === 0 ? '#380879' : '#8305ab'}`, borderRadius: '10px', float: 'left', width: '100%'}}>
+                    <div style={{ marginBottom: '.5em', backgroundColor: `${times.indexOf(time)%2 === 0 ? '#4d2881ff' : '#8305ab'}`, borderRadius: '10px', float: 'left', width: '100%'}}>
                         <div style={{float: 'left',  width: '50%'}}>
                             <div className='LGF' style={{float: 'left', fontSize: '1.75em', marginLeft: '.5em', textShadow: textShadowStyle }}>
                                 {convertMilitaryTime(time)}
