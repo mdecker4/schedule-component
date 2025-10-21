@@ -39,7 +39,7 @@ function SchedulePage() {
 
   return (
     <>
-      <ToggleButton onChange={() => setSelected(() => toggleView())} style={{color: 'yellow'}} size={'large'}>
+      <ToggleButton onChange={() => toggleView()} style={{color: 'yellow'}} size={'large'}>
         {
           listMode ? <CalendarViewMonthIcon style={{fontSize: '50px'}}/> :
           <CalendarViewDayIcon style={{fontSize: '50px'}}/>
