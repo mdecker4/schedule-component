@@ -31,8 +31,9 @@ function SchedulePage() {
   }, [url]);
 
   const toggleView = () => {
-    console.log('Toggle');
+    console.log('Toggle start: ' + listMode);
     setSelected(!listMode);
+    console.log('Toggle end: ' + listMode);
   }
 
 
