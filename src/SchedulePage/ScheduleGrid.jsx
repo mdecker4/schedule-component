@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PannelModal from './PannelModal';
 import Button from '@mui/material/Button';
-import { Typography } from '@mui/material';
-import { convertMilitaryTime } from './util';
+import { convertMilitaryTime } from '../util';
 
-const SchedulePage = ({ url }) => {
+const SchedulePage = ({ scheduleText }) => {
   const [scheduleMap, setScheduleMap] = useState({});
   const [timeSlots, setTimeSlots] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,11 +23,7 @@ const SchedulePage = ({ url }) => {
   useEffect(() => {
     const fetchAndParseCSV = async () => {
       try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-        const text = await response.text();
-        const parsed = parseCSV(text);
-        const { schedule, slots } = buildSchedule(parsed);
+        const { schedule, slots } = buildSchedule(scheduleText);
         setScheduleMap(schedule);
         setTimeSlots(slots);
       } catch (err) {
@@ -39,14 +34,7 @@ const SchedulePage = ({ url }) => {
     };
 
     fetchAndParseCSV();
-  }, [url]);
-
-  const parseCSV = (csvText) => {
-    return csvText
-      .trim()
-      .split('\n')
-      .map(row => row.split(','));
-  };
+  }, [scheduleText]);
 
   const buildSchedule = (rows) => {
     const schedule = {};
@@ -57,10 +45,10 @@ const SchedulePage = ({ url }) => {
 
     for (let i = 1; i < rows.length; i++) {
       const row = rows[i];
-      const startTime = row[3]?.trim(); // e.g. "13:00"
-      const duration = parseInt(row[4], 10); // duration in minutes
-      const columnType = row[5]?.trim();
-      const fullSpan = row[8] == 1;
+      const startTime = row.startTime?.trim(); // e.g. "13:00"
+      const duration = parseInt(row.duration, 10); // duration in minutes
+      const columnType = row.location?.trim();
+      const fullSpan = row.spanAll == 1;
 
       if (!startTime || isNaN(duration)) continue;//|| !columns.includes(columnType)
 
@@ -89,7 +77,7 @@ const SchedulePage = ({ url }) => {
 
       if (fullSpan) {
         if (!schedule[startTime]) schedule[startTime] = {};
-        const slotCount = Math.ceil(parseInt(row[4], 10) / slotDuration);
+        const slotCount = Math.ceil(parseInt(row.duration, 10) / slotDuration);
         const timeSlots = generateTimeSlots(startTime, slotCount, slotDuration);
       
         timeSlots.forEach((slot, i) => {
@@ -114,7 +102,6 @@ const SchedulePage = ({ url }) => {
     for (let t = earliestMinutes; t <= latestMinutes; t += slotDuration) {
       fullSlots.push(minutesToTime(t));
     }
-
     return { schedule, slots: fullSlots };
   };
 
@@ -146,15 +133,7 @@ const SchedulePage = ({ url }) => {
     if(!!cell)
     {
         setModalContent({
-                panelName: cell[0],
-                description: cell[1],
-                panelRunner: cell[2],
-                startTime: cell[3],
-                duration: cell[4],
-                location: cell[5],
-                ageRating: cell[6],
-                displayColor: cell[7],
-                spanAll: cell[8]
+                ...cell
             });
     }
   }
@@ -164,7 +143,6 @@ const SchedulePage = ({ url }) => {
 
   return (
     <div style={{width: '100%'}}>   
-      <h2>Schedule</h2>
       <PannelModal handleClose={toggleModal} open={modalOpen && !!modalContent} panel={modalContent}></PannelModal>
       <table border="1" cellPadding="2" style={{ borderCollapse: 'collapse', width: '100%', height: '100%', backgroundColor: 'white'}}>
         <thead>
@@ -187,9 +165,9 @@ const SchedulePage = ({ url }) => {
                     <td style={{maxHeight: '100px'}} key={col} rowSpan={cell.span} colSpan={cell.fullWidth && colIndex === 0 ? columns.length : null}>
                       {
                         <>
-                            <Button onClick={() => toggleModal(cell.content)} style={{...panelEntryStyle, backgroundColor: cell.content[7]}}>
+                            <Button onClick={() => toggleModal(cell.content)} style={{...panelEntryStyle, backgroundColor: cell.content.displayColor}}>
                                 <div className='LGF' style={{ fontSize: '1.2em' }} >
-                                    {cell.content[0]}
+                                    {cell.content.panelName}
                                 </div>
                             </Button>
                         </>
@@ -209,3 +187,21 @@ const SchedulePage = ({ url }) => {
 };
 
 export default SchedulePage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

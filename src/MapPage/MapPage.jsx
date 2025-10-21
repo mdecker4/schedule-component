@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import PannelModal from '../PannelModal';
+import PannelModal from '../SchedulePage/PannelModal';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 
@@ -90,7 +90,6 @@ const MapPage = ({ url }) => {
 
   return (
     <div>
-      <h2>Map</h2>
       <table border="0" cellPadding="6" style={{ borderCollapse: 'collapse'}}>
         <tbody>
           {mapData.map((row, rowIndex) => (

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import PannelModal from './PannelModal';
+import PannelModal from './SchedulePage/PannelModal';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import PannelModal from '../PannelModal';
+import PannelModal from './PannelModal';
 import Button from '@mui/material/Button';
 import { Paper, Typography } from '@mui/material';
 import { emptyPanel, fetchAndParseScheduleData } from '../api/api';
 import { convertMilitaryTime } from '../util';
 
-const ScheduleListPage = ({ url }) => {
-  const [schedule, setSchedule] = useState([]);
+const ScheduleListPage = ({ schedule }) => {
   const [groupedSchedule, setGroupedSchedule] = useState([]);
   const [times, setTimes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,9 +26,7 @@ const ScheduleListPage = ({ url }) => {
   useEffect(() => {
     const fetchAndParseCSV = async () => {
       try {
-        const parsed = await fetchAndParseScheduleData(url);
-        setSchedule(parsed);
-        groupScheduleByTime(parsed)
+        groupScheduleByTime(schedule)
       } catch (err) {
         setError(err.message);
       } finally {
@@ -38,7 +35,7 @@ const ScheduleListPage = ({ url }) => {
     };
 
     fetchAndParseCSV();
-  }, [url]);
+  }, [schedule]);
 
   const toggleModal = (panel = null) => {
     setModal(!modalOpen);
@@ -61,7 +58,6 @@ const ScheduleListPage = ({ url }) => {
 
   return (
     <div style={{width: '100%'}}>   
-      <h2>Schedule</h2>
       <PannelModal handleClose={toggleModal} open={modalOpen && !!modalContent} panel={modalContent}></PannelModal>
         {
             times.map(time => 
