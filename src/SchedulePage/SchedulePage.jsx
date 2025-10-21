@@ -12,6 +12,8 @@ function SchedulePage() {
   
   const [schedule, setSchedule] = useState([]);
   const [listMode, setSelected] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchAndParseCSV = async () => {
@@ -28,10 +30,15 @@ function SchedulePage() {
     fetchAndParseCSV();
   }, [url]);
 
+  const toggleView = () => {
+    console.log('Toggle');
+    setSelected(!listMode);
+  }
+
 
   return (
     <>
-      <ToggleButton onChange={() => setSelected(() => setSelected(!listMode))} style={{color: 'yellow'}} size={'large'}>
+      <ToggleButton onChange={() => setSelected(() => toggleView())} style={{color: 'yellow'}} size={'large'}>
         {
           listMode ? <CalendarViewMonthIcon style={{fontSize: '50px'}}/> :
           <CalendarViewDayIcon style={{fontSize: '50px'}}/>

@@ -10,18 +10,8 @@ const ScheduleListPage = ({ schedule }) => {
   const [times, setTimes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [modalOpen, setModal] = useState(false);
-  const [modalContent, setModalContent] = useState();
-
+  
   const textShadowStyle = '-1px -1px 0 #ffffffff, 1px -1px 0 #ffffffff, -1px 1px 0 #ffffffff, 1px 1px 0 #ffffffff'
-
-  const panelEntryStyle = {
-    width: '100%', 
-    height: '100%', 
-    color: 'black',
-    margin: 0,
-  }
-
 
   useEffect(() => {
     const fetchAndParseCSV = async () => {
@@ -37,14 +27,6 @@ const ScheduleListPage = ({ schedule }) => {
     fetchAndParseCSV();
   }, [schedule]);
 
-  const toggleModal = (panel = null) => {
-    setModal(!modalOpen);
-    if(!!panel)
-    {
-        setModalContent(panel);
-    }
-  }
-
   const groupScheduleByTime = (schedule) => {
         const grouped = Object.groupBy(schedule, (panel) => panel.startTime)
         setGroupedSchedule(grouped);
@@ -58,7 +40,6 @@ const ScheduleListPage = ({ schedule }) => {
 
   return (
     <div style={{width: '100%'}}>   
-      <PannelModal handleClose={toggleModal} open={modalOpen && !!modalContent} panel={modalContent}></PannelModal>
         {
             times.map(time => 
                 <div>
