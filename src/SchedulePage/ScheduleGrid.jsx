@@ -3,14 +3,15 @@ import PannelModal from './PannelModal';
 import Button from '@mui/material/Button';
 import { convertMilitaryTime } from '../util';
 
-const SchedulePage = ({ scheduleText }) => {
+const ScheduleGrid = ({ scheduleText }) => {
   const [scheduleMap, setScheduleMap] = useState({});
+  const [scheduleMapByDay, setScheduleMapByDay] = useState({})
   const [timeSlots, setTimeSlots] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [modalOpen, setModal] = useState(false);
   const [modalContent, setModalContent] = useState(['Error', 'Error']);
-  const columns = ['Main Events','A', 'B', 'C', 'Video Game'];
+  const [selectedDay, setDay] = useState('Sunday');
+  const columns = ['Main Events','A', 'B', 'C', 'Video Game', 'Maid Cafe'];
+  const days = ['Friday', 'Saturday', 'Sunday'];
   const slotDuration = 30; // minutes
 
   const panelEntryStyle = {
@@ -20,21 +21,39 @@ const SchedulePage = ({ scheduleText }) => {
     margin: 0,
   }
 
+const dayButtonStyle = {
+    width: '20%', 
+    height: '50px', 
+    minWidth: '80px',
+    marginTop: '.8em',
+    color: 'black',
+    margin: 0,
+  }
+
   useEffect(() => {
     const fetchAndParseCSV = async () => {
-      try {
-        const { schedule, slots } = buildSchedule(scheduleText);
-        setScheduleMap(schedule);
-        setTimeSlots(slots);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
+        const schedule = groupAndBuildSchedule(scheduleText);
+        setScheduleMapByDay(schedule);
+        setScheduleMap(schedule.filter(x => x.day === selectedDay)[0].timeSlots.schedule);
+        setTimeSlots(schedule.filter(x => x.day === selectedDay)[0].timeSlots.slots);
     };
 
     fetchAndParseCSV();
   }, [scheduleText]);
+
+  const groupAndBuildSchedule = (rows) => {
+    const schedule = [];
+
+    const groupedByDays = Object.groupBy(rows, (row) => row.scheduleDay.trim())
+
+    for(let i = 0; i < days.length; i++){
+
+      const daySchedule = groupedByDays[days[i]];
+      const dayGroup = {day: days[i], timeSlots: buildSchedule(groupedByDays[days[i]])}
+      schedule.push(dayGroup);
+    }
+    return schedule;
+  };
 
   const buildSchedule = (rows) => {
     const schedule = {};
@@ -43,12 +62,13 @@ const SchedulePage = ({ scheduleText }) => {
     let earliestMinutes = Infinity;
     let latestMinutes = -Infinity;
 
-    for (let i = 1; i < rows.length; i++) {
+    for (let i = 0; i < rows.length; i++) {
       const row = rows[i];
       const startTime = row.startTime?.trim(); // e.g. "13:00"
       const duration = parseInt(row.duration, 10); // duration in minutes
       const columnType = row.location?.trim();
       const fullSpan = row.spanAll == 1;
+
 
       if (!startTime || isNaN(duration)) continue;//|| !columns.includes(columnType)
 
@@ -94,16 +114,13 @@ const SchedulePage = ({ scheduleText }) => {
             }
           });
         });
-    }
-  }
-
-    // Generate full time slots from earliest to latest (every 30 min)
+    }}
     const fullSlots = [];
-    for (let t = earliestMinutes; t <= latestMinutes; t += slotDuration) {
-      fullSlots.push(minutesToTime(t));
+        for (let t = earliestMinutes; t <= latestMinutes; t += slotDuration) {
+        fullSlots.push(minutesToTime(t));
+        }
+        return { schedule, slots: fullSlots };
     }
-    return { schedule, slots: fullSlots };
-  };
 
   const generateTimeSlots = (start, count, duration) => {
     const slots = [];
@@ -138,11 +155,22 @@ const SchedulePage = ({ scheduleText }) => {
     }
   }
 
-  if (loading) return <p>Loading schedule...</p>;
-  if (error) return <p>Error: {error}</p>;
+  const changeDay = (newDay) => {
+    setDay(newDay);
+    setScheduleMap(scheduleMapByDay.filter(x => x.day === newDay)[0].timeSlots.schedule);
+    setTimeSlots(scheduleMapByDay.filter(x => x.day === newDay)[0].timeSlots.slots);
+  }
+
 
   return (
     <div style={{width: '100%'}}>   
+      <>
+        {days.map((day) => {
+            return <Button onClick={() => changeDay(day)} style={{...dayButtonStyle, backgroundColor: day === selectedDay ? "#5CE1E6" : "#FFDE59"}}>
+                <div className='LGF' style={{ fontSize: '1.2em' }} >{day}</div>
+            </Button>
+        })}
+      </>
       <PannelModal handleClose={toggleModal} open={modalOpen && !!modalContent} panel={modalContent}></PannelModal>
       <table border="1" cellPadding="2" style={{ borderCollapse: 'collapse', width: '100%', height: '100%', backgroundColor: 'white'}}>
         <thead>
@@ -178,6 +206,7 @@ const SchedulePage = ({ scheduleText }) => {
                 if (cell?.skip) return;
                 return <td key={col}></td>;
               })}
+              <td><strong>{convertMilitaryTime(time)}</strong></td>
             </tr>
           ))}
         </tbody>
@@ -186,7 +215,8 @@ const SchedulePage = ({ scheduleText }) => {
   );
 };
 
-export default SchedulePage;
+
+export default ScheduleGrid;
 
 
 

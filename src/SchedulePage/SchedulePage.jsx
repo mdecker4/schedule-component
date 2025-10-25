@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import ScheduleGrid from './ScheduleGrid'
 import ScheduleListPage from './ScheduleListPage';
 import { fetchAndParseScheduleData } from '../api/api';
-import { ToggleButton } from '@mui/material'
+import { ToggleButton, CircularProgress } from '@mui/material'
 import CalendarViewDayIcon from '@mui/icons-material/CalendarViewDay';
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth';
 
@@ -31,25 +31,25 @@ function SchedulePage() {
   }, [url]);
 
   const toggleView = () => {
-    console.log('Toggle start: ' + listMode);
     setSelected(!listMode);
-    console.log('Toggle end: ' + listMode);
   }
 
 
   return (
     <>
-      <ToggleButton onChange={() => toggleView()} style={{color: 'yellow'}} size={'large'}>
+      <ToggleButton onChange={() => toggleView()} style={{color: 'yellow', float: 'left'}} size={'large'}>
         {
           listMode ? <CalendarViewMonthIcon style={{fontSize: '50px'}}/> :
           <CalendarViewDayIcon style={{fontSize: '50px'}}/>
         }
       </ToggleButton>
-      {
-        listMode ?
-        <ScheduleListPage schedule={schedule} /> :
-        <ScheduleGrid scheduleText={schedule} />
-      }
+        {
+          loading ?
+            <CircularProgress style={{float: 'left', marginLeft: '40%'}}/> :
+            listMode ?
+              <ScheduleListPage schedule={schedule} /> :
+              <ScheduleGrid scheduleText={schedule} />
+        }
     </>
   )
 }

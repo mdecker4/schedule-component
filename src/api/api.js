@@ -31,7 +31,8 @@ const buildScheduleArray = (csvArray) => {
                 location: p[5],
                 ageRating: p[6],
                 displayColor: p[7],
-                spanAll: p[8]
+                spanAll: p[8],
+                scheduleDay: p[9].trim()
             })
         });
         return scheduleArray;
