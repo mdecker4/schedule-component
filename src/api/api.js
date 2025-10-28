@@ -36,7 +36,6 @@ const buildScheduleArray = (csvArray) => {
                 catagory: p[10].trim()
             })
         });
-        console.log(scheduleArray);
         return scheduleArray;
     }
     return [];
@@ -52,5 +51,4 @@ export const emptyPanel = {
     ageRating: null,
     displayColor: null,
     spanAll: null
-
 }

@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Paper } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import { convertMilitaryTime } from '../util';
 
-const ScheduleListPage = ({ schedule }) => {
+const ScheduleListPage = ({ schedule, days, selectedDay, setDay }) => {
   const [groupedSchedule, setGroupedSchedule] = useState([]);
   const [times, setTimes] = useState([]);
-  const days = ['Friday', 'Saturday', 'Sunday'];
-  const [selectedDay, setDay] = useState('Sunday');
   const [error, setError] = useState(null);
 
   const textShadowStyle = '-1px -1px 0 #ffffffff, 1px -1px 0 #ffffffff, -1px 1px 0 #ffffffff, 1px 1px 0 #ffffffff'
@@ -25,6 +23,8 @@ const ScheduleListPage = ({ schedule }) => {
     const fetchAndParseCSV = async () => {
       try {
         groupScheduleByTime(schedule)
+        if(days)
+        {}
       } catch (err) {
         setError(err.message);
       }
@@ -43,7 +43,6 @@ const ScheduleListPage = ({ schedule }) => {
 
   const changeDay = (newDay) => {
     setDay(newDay);
-    console.log(newDay);
   }
 
   if (error) return <p>Error: {error}</p>;
@@ -66,7 +65,7 @@ const ScheduleListPage = ({ schedule }) => {
                             <div className='LGF' style={{float: 'left', fontSize: '1.75em', marginLeft: '.5em', textShadow: textShadowStyle }}>
                                 {convertMilitaryTime(time)}
                             </div>
-                        </div> {console.log(groupedSchedule[time].filter(x => x.scheduleDay === selectedDay))}
+                        </div>
                     {
                         groupedSchedule[time].filter(x => x.scheduleDay === selectedDay).map(panel => {
                             return( 
@@ -79,16 +78,21 @@ const ScheduleListPage = ({ schedule }) => {
                                         
                                     </div>
                                     <Paper style={{float: 'left', width: '95%', backgroundColor:'white', borderRadius: '10px'}}>
-                                        {panel.description}
+                                        <div style={{margin: '10px'}}>{panel.description}</div>
                                         <br/>
-                                        Panel Runner: {panel.panelRunner}
+                                        <b>Presented by: </b>{panel.panelRunner}
                                     </Paper>
-                                    <div style={{float: 'left', fontSize: '.75em'}}>
-                                        <b>Duration:</b> {panel.duration} minutes
+                                    <div style={{float: 'left', fontSize: '1em'}}>
+                                      <b>Duration:</b> {panel.duration} minutes
+                                      <br/>
+                                      <div style={{fontSize: '.75em', float: 'left'}}>
+                                          {`${panel.catagory === '' ? 'Attendee' : panel.catagory} Panel`}
+                                      </div>
                                     </div>
-                                    <div style={{float: 'right', fontSize: '.75em'}}>
+                                    <div style={{float: 'right', fontSize: '1em'}}>
                                         <b>Age rating:</b> {panel.ageRating}
                                     </div>
+                                    
                                 </Paper>
                             )
                         })

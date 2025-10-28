@@ -3,15 +3,13 @@ import PannelModal from './PannelModal';
 import Button from '@mui/material/Button';
 import { convertMilitaryTime } from '../util';
 
-const ScheduleGrid = ({ scheduleText }) => {
+const ScheduleGrid = ({ scheduleText, days, selectedDay, setDay }) => {
   const [scheduleMap, setScheduleMap] = useState({});
   const [scheduleMapByDay, setScheduleMapByDay] = useState({})
   const [timeSlots, setTimeSlots] = useState([]);
   const [modalOpen, setModal] = useState(false);
   const [modalContent, setModalContent] = useState(['Error', 'Error']);
-  const [selectedDay, setDay] = useState('Sunday');
   const columns = ['Main Events','A', 'B', 'C', 'Video Game', 'Maid Cafe'];
-  const days = ['Friday', 'Saturday', 'Sunday'];
   const slotDuration = 30; // minutes
 
   const panelEntryStyle = {

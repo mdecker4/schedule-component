@@ -5,6 +5,8 @@ import { fetchAndParseScheduleData } from '../api/api';
 import { ToggleButton, CircularProgress } from '@mui/material'
 import CalendarViewDayIcon from '@mui/icons-material/CalendarViewDay';
 import CalendarViewMonthIcon from '@mui/icons-material/CalendarViewMonth';
+import { getCurrentDay } from '../util';
+
 
 function SchedulePage() {
 
@@ -14,12 +16,20 @@ function SchedulePage() {
   const [listMode, setSelected] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedDay, setDay] = useState('Friday');
+  
+  const days = ['Friday', 'Saturday', 'Sunday'];
 
   useEffect(() => {
     const fetchAndParseCSV = async () => {
       try {
         const parsed = await fetchAndParseScheduleData(url);
         setSchedule(parsed);
+        const today = getCurrentDay();
+        if(days.includes(today))
+        {
+          setDay(today);
+        }
       } catch (err) {
         setError(err.message);
       } finally {
@@ -47,8 +57,8 @@ function SchedulePage() {
           loading ?
             <CircularProgress style={{float: 'left', marginLeft: '40%'}}/> :
             listMode ?
-              <ScheduleListPage schedule={schedule} /> :
-              <ScheduleGrid scheduleText={schedule} />
+              <ScheduleListPage schedule={schedule} days={days} selectedDay={selectedDay} setDay={setDay} /> :
+              <ScheduleGrid scheduleText={schedule} days={days} selectedDay={selectedDay} setDay={setDay} />
         }
     </>
   )

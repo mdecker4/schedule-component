@@ -44,7 +44,7 @@ if(panel != null)  {return (
               {panel.description}
             </Typography>
             <Typography id="transition-modal-runner" style={{float: "left", fontSize: '.75em'}}>
-                {`Panel Runner: ${panel.panelRunner}`}
+                {`Presented by: ${panel.panelRunner}`}
             </Typography>
             <Typography id="transition-modal-age-rating" style={{float: "right", fontSize: '.75em'}}>
                 {`Age Rating: ${panel.ageRating}`}
