@@ -49,6 +49,10 @@ if(panel != null)  {return (
             <Typography id="transition-modal-age-rating" style={{float: "right", fontSize: '.75em'}}>
                 {`Age Rating: ${panel.ageRating}`}
             </Typography>
+            <br/>
+            <Typography id="transition-modal-runner" style={{float: "left", fontSize: '.5em'}}>
+                {`${panel.catagory === '' ? 'Attendee' : panel.catagory} Panel`}
+            </Typography>
           </Box>
         </Fade>
       </Modal>

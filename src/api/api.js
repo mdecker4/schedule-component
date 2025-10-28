@@ -24,7 +24,7 @@ const buildScheduleArray = (csvArray) => {
         csvArray.forEach(p => {
             scheduleArray.push({
                 panelName: p[0],
-                description: p[1],
+                description: p[1].replace(/{\*}/g, ","),
                 panelRunner: p[2],
                 startTime: p[3],
                 duration: p[4],
@@ -32,9 +32,11 @@ const buildScheduleArray = (csvArray) => {
                 ageRating: p[6],
                 displayColor: p[7],
                 spanAll: p[8],
-                scheduleDay: p[9].trim()
+                scheduleDay: p[9].trim(),
+                catagory: p[10].trim()
             })
         });
+        console.log(scheduleArray);
         return scheduleArray;
     }
     return [];
