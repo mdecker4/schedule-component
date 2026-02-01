@@ -10,8 +10,8 @@ import { getCurrentDay } from '../util';
 
 function SchedulePage() {
 
-  const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQEqqtCdGQFdyqlq_5c-Om7rmG24kqHTbwBUaGBlBuig_nk-sFmy3PXhfZV6QpiZGGs5ppbntozwIpW/pub?gid=945819308&single=true&output=csv'
-  
+  const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS0MDB_extrUaVDxI2ZcPUFiUTQ1-9FpUw8uQksVP6N0z1Nhm7352tv_Yr75KEAmRqvEqfRyb6qCqTe/pub?gid=1278625778&single=true&output=csv'  //production
+
   const [schedule, setSchedule] = useState([]);
   const [listMode, setSelected] = useState(false);
   const [loading, setLoading] = useState(true);

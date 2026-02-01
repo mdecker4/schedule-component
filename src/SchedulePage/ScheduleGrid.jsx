@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import PannelModal from './PannelModal';
+import PanelModal from './PanelModal';
 import Button from '@mui/material/Button';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { convertMilitaryTime } from '../util';
+import { Tooltip } from '@mui/material';
 
 const ScheduleGrid = ({ scheduleText, days, selectedDay, setDay }) => {
   const [scheduleMap, setScheduleMap] = useState({});
@@ -9,7 +11,7 @@ const ScheduleGrid = ({ scheduleText, days, selectedDay, setDay }) => {
   const [timeSlots, setTimeSlots] = useState([]);
   const [modalOpen, setModal] = useState(false);
   const [modalContent, setModalContent] = useState(['Error', 'Error']);
-  const columns = ['Main Events','A', 'B', 'C', 'Video Game', 'Maid Cafe'];
+  const columns = ['Main Events','A', 'B', 'C', 'Workshop', 'Maid Cafe'];
   const slotDuration = 30; // minutes
 
   const panelEntryStyle = {
@@ -42,7 +44,7 @@ const dayButtonStyle = {
   const groupAndBuildSchedule = (rows) => {
     const schedule = [];
 
-    const groupedByDays = Object.groupBy(rows, (row) => row.scheduleDay.trim())
+    const groupedByDays = Object.groupBy(rows, (row) => row.scheduleDay)
 
     for(let i = 0; i < days.length; i++){
 
@@ -169,7 +171,7 @@ const dayButtonStyle = {
             </Button>
         })}
       </>
-      <PannelModal handleClose={toggleModal} open={modalOpen && !!modalContent} panel={modalContent}></PannelModal>
+      <PanelModal handleClose={toggleModal} open={modalOpen && !!modalContent} panel={modalContent}></PanelModal>
       <table border="1" cellPadding="2" style={{ borderCollapse: 'collapse', width: '100%', height: '100%', backgroundColor: 'white'}}>
         <thead>
           <tr>
@@ -192,9 +194,16 @@ const dayButtonStyle = {
                       {
                         <>
                             <Button onClick={() => toggleModal(cell.content)} style={{...panelEntryStyle, backgroundColor: cell.content.displayColor}}>
-                                <div className='LGF' style={{ fontSize: '1.2em' }} >
-                                    {cell.content.panelName}
-                                </div>
+                              {cell.content.ribbon ? 
+                              <div style={{ position: 'absolute', top: 2, right: 2}}>
+                                <Tooltip title="Chance to earn a Ribbon">
+                                  <BookmarkIcon/>
+                                </Tooltip>
+                              </div> : 
+                              null}
+                              <div className='LGF' style={{ fontSize: '1.2em' }} >
+                                  {cell.content.panelName}
+                              </div>
                             </Button>
                         </>
                       }

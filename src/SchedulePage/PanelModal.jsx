@@ -5,17 +5,16 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import PanelCard from './PanelCard';
+
 
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '80%',
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
+  width: '100%',
   maxWidth: 700
 };
 
@@ -37,22 +36,11 @@ if(panel != null)  {return (
       >
         <Fade in={open}>
           <Box sx={style}>
-            <div id="transition-modal-title" className='LGF' style={{ fontSize: '1.5em' }}>
-              {panel.panelName}
-            </div>
-            <Typography id="transition-modal-description" sx={{ mt: 2 }} style={{marginBottom: '1em'}}>
-              {panel.description}
-            </Typography>
-            <Typography id="transition-modal-runner" style={{float: "left", fontSize: '.75em'}}>
-                {`Presented by: ${panel.panelRunner}`}
-            </Typography>
-            <Typography id="transition-modal-age-rating" style={{float: "right", fontSize: '.75em'}}>
-                {`Age Rating: ${panel.ageRating}`}
-            </Typography>
-            <br/>
-            <Typography id="transition-modal-runner" style={{float: "left", fontSize: '.5em'}}>
-                {`${panel.catagory === '' ? 'Attendee' : panel.catagory} Panel`}
-            </Typography>
+            {
+              open ?
+              <PanelCard panel={panel}/> :
+              null
+            }
           </Box>
         </Fade>
       </Modal>

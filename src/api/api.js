@@ -1,30 +1,36 @@
 export const fetchAndParseScheduleData = async (url) => {
-      try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-        const text = await response.text();
-        const parsed = parseCSV(text);
-        return buildScheduleArray(parsed);
-      } catch (err) {
-        throw(err.message);
-      }
+      const responseText = await fetch(url)
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(`HTTP ${res.status}`);
+          }
+          return res.text();
+        })
+        .then(csvText => {
+          const parsed = parseCSV(csvText);
+          return parsed;
+        })
+        .catch(err => {
+          console.error("Fetch failed:", err);
+        });
+      return buildScheduleArray(responseText)
     };
 
 const parseCSV = (csvText) => {
     return csvText
       .trim()
       .split('\n')
-      .map(row => row.split(','));
+      .map(row => row.split(','));      
   };
 
 const buildScheduleArray = (csvArray) => {
     if(csvArray.length > 0)
     {
-        const scheduleArray = [];
+        const scheduleArray = [];        
         csvArray.forEach(p => {
             scheduleArray.push({
                 panelName: p[0],
-                description: p[1].replace(/{\*}/g, ","),
+                description: p[1],
                 panelRunner: p[2],
                 startTime: p[3],
                 duration: p[4],
@@ -32,8 +38,9 @@ const buildScheduleArray = (csvArray) => {
                 ageRating: p[6],
                 displayColor: p[7],
                 spanAll: p[8],
-                scheduleDay: p[9].trim(),
-                catagory: p[10].trim()
+                scheduleDay: p[9],
+                catagory: p[10],
+                ribbon: p[11]
             })
         });
         return scheduleArray;
