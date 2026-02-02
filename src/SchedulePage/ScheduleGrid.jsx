@@ -193,7 +193,7 @@ const dayButtonStyle = {
                     <td style={{maxHeight: '100px'}} key={col} rowSpan={cell.span} colSpan={cell.fullWidth && colIndex === 0 ? columns.length : null}>
                       {
                         <>
-                            <Button onClick={() => toggleModal(cell.content)} style={{...panelEntryStyle, backgroundColor: cell.content.displayColor}}>
+                            <Button onClick={() => toggleModal(cell.content)} style={{...panelEntryStyle, backgroundColor: cell.content.displayColor, lineHeight: '1.2em'}}>
                               {cell.content.ribbon ? 
                               <div style={{ position: 'absolute', top: 2, right: 2}}>
                                 <Tooltip title="Chance to earn a Ribbon">
