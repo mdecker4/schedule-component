@@ -11,7 +11,7 @@ const ScheduleGrid = ({ scheduleText, days, selectedDay, setDay }) => {
   const [timeSlots, setTimeSlots] = useState([]);
   const [modalOpen, setModal] = useState(false);
   const [modalContent, setModalContent] = useState(['Error', 'Error']);
-  const columns = ['Main Events','A', 'B', 'C', 'Workshop', 'Maid Cafe'];
+  const columns = ['Main Events','A', 'B', 'C', 'D', 'Workshop', 'Maid Cafe'];
   const slotDuration = 30; // minutes
 
   const panelEntryStyle = {
@@ -187,10 +187,11 @@ const dayButtonStyle = {
               <td><strong>{convertMilitaryTime(time)}</strong></td>
               {columns.map((col, colIndex) => {
                 const cell = scheduleMap[time]?.[col];
-                if (cell?.fullWidth && colIndex != 0) return null;
+                if (cell?.fullWidth && colIndex != 0 &&  colIndex != 6) return null;
+                if (cell?.fullWidth && colIndex == 6) return <td/>;
                 if (cell?.content) {
                   return (
-                    <td style={{maxHeight: '100px'}} key={col} rowSpan={cell.span} colSpan={cell.fullWidth && colIndex === 0 ? columns.length : null}>
+                    <td style={{maxHeight: '100px'}} key={col} rowSpan={cell.span} colSpan={cell.fullWidth && colIndex === 0 ? columns.length - 1 : null}>
                       {
                         <>
                             <Button onClick={() => toggleModal(cell.content)} style={{...panelEntryStyle, backgroundColor: cell.content.displayColor, lineHeight: '1.2em'}}>
