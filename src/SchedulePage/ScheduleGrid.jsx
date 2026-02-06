@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PanelModal from './PanelModal';
 import Button from '@mui/material/Button';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import { convertMilitaryTime } from '../util';
+import { convertMilitaryTime, getPreviousTimeSlot } from '../util';
 import { Tooltip } from '@mui/material';
 
 const ScheduleGrid = ({ scheduleText, days, selectedDay, setDay }) => {
@@ -11,7 +11,10 @@ const ScheduleGrid = ({ scheduleText, days, selectedDay, setDay }) => {
   const [timeSlots, setTimeSlots] = useState([]);
   const [modalOpen, setModal] = useState(false);
   const [modalContent, setModalContent] = useState(['Error', 'Error']);
-  const columns = ['Main Events','A', 'B', 'C', 'D', 'Workshop', 'Maid Cafe'];
+  const panelColumns = ['Main Events','A', 'B', 'C', 'D', 'Workshop'];
+  const eventColumns = ['Maid Cafe', 'Video Game', 'Table Top', 'LARP'];
+  const [columns, setColumns] = useState(panelColumns);
+  const [columnToggle, setColumnToggle] = useState(1);
   const slotDuration = 30; // minutes
 
   const panelEntryStyle = {
@@ -102,7 +105,7 @@ const dayButtonStyle = {
       
         timeSlots.forEach((slot, i) => {
           if (!schedule[slot]) schedule[slot] = {};
-          columns.forEach(col => {
+          panelColumns.forEach(col => {
             if (i === 0) {
               schedule[slot][col] = {
                 fullWidth: true,
@@ -110,7 +113,7 @@ const dayButtonStyle = {
                 content: row
               };
             } else {
-              schedule[slot][col] = { skip: true };
+              schedule[slot][col] =  { skip: true };
             }
           });
         });
@@ -155,6 +158,11 @@ const dayButtonStyle = {
     }
   }
 
+  const toggleColumns = () => {
+    setColumnToggle(columnToggle === 1 ? 2 : 1);
+    setColumns(columnToggle === 1 ? eventColumns : panelColumns);
+  }
+
   const changeDay = (newDay) => {
     setDay(newDay);
     setScheduleMap(scheduleMapByDay.filter(x => x.day === newDay)[0].timeSlots.schedule);
@@ -164,13 +172,33 @@ const dayButtonStyle = {
 
   return (
     <div style={{width: '100%'}}>   
-      <>
-        {days.map((day) => {
-            return <Button onClick={() => changeDay(day)} style={{...dayButtonStyle, backgroundColor: day === selectedDay ? "#5CE1E6" : "#FFDE59"}}>
-                <div className='LGF' style={{ fontSize: '1.2em' }} >{day}</div>
-            </Button>
-        })}
-      </>
+      <div >
+        <>
+          {days.map((day) => {
+              return <Button onClick={() => changeDay(day)} style={{...dayButtonStyle, backgroundColor: day === selectedDay ? "#5CE1E6" : "#FFDE59"}}>
+                  <div className='LGF' style={{ fontSize: '1.35em' }} >{day}</div>
+              </Button>
+          })}
+        </>
+        <div style={{margin: '1em'}}>
+          <Button 
+            disabled={columnToggle == 1} 
+            style={{...dayButtonStyle, backgroundColor: columnToggle == 1 ? "#5CE1E6" : "#FFDE59"}} 
+            onClick={toggleColumns}>
+              <div className='LGF' style={{color: 'black', fontSize: '1.25em'}}>
+                Panels
+              </div>
+          </Button>
+          <Button 
+            disabled={columnToggle == 2} 
+            style={{...dayButtonStyle, backgroundColor: columnToggle == 2 ? "#5CE1E6" : "#FFDE59"}} 
+            onClick={toggleColumns}>
+              <div className='LGF' style={{color: 'black', fontSize: '1.25em'}}>
+                Events
+              </div>
+          </Button>
+        </div>
+      </div>
       <PanelModal handleClose={toggleModal} open={modalOpen && !!modalContent} panel={modalContent}></PanelModal>
       <table border="1" cellPadding="2" style={{ borderCollapse: 'collapse', width: '100%', height: '100%', backgroundColor: 'white'}}>
         <thead>
@@ -179,6 +207,7 @@ const dayButtonStyle = {
             {columns.map(col => (
               <th style={{width: '200px'}} key={col}>{col}</th>
             ))}
+            <th style={{width: '30px'}}>Time</th>
           </tr>
         </thead>
         <tbody>
@@ -187,11 +216,11 @@ const dayButtonStyle = {
               <td><strong>{convertMilitaryTime(time)}</strong></td>
               {columns.map((col, colIndex) => {
                 const cell = scheduleMap[time]?.[col];
-                if (cell?.fullWidth && colIndex != 0 &&  colIndex != 6) return null;
-                if (cell?.fullWidth && colIndex == 6) return <td/>;
+                if (cell?.fullWidth && colIndex != 0) return null;
                 if (cell?.content) {
                   return (
-                    <td style={{maxHeight: '100px'}} key={col} rowSpan={cell.span} colSpan={cell.fullWidth && colIndex === 0 ? columns.length - 1 : null}>
+                    cell?.fullWidth && columnToggle == 2 ? null :
+                    <td style={{maxHeight: '100px'}} key={col} rowSpan={cell.span} colSpan={cell.fullWidth && colIndex === 0 && columnToggle != 2 ? columns.length : null}>
                       {
                         <>
                             <Button onClick={() => toggleModal(cell.content)} style={{...panelEntryStyle, backgroundColor: cell.content.displayColor, lineHeight: '1.2em'}}>
@@ -210,11 +239,13 @@ const dayButtonStyle = {
                       }
                     </td>
                   );
-                }                
-                if (cell?.skip) return;
+                }               
+                if (cell?.skip || columns.includes(cell?.location)) return;
                 return <td key={col}></td>;
               })}
-              <td><strong>{convertMilitaryTime(time)}</strong></td>
+              {
+                <td><strong>{convertMilitaryTime(time)}</strong></td>
+              }
             </tr>
           ))}
         </tbody>

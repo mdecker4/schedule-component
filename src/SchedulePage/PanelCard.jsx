@@ -1,4 +1,4 @@
-import { Paper, Typography } from '@mui/material';
+import { Button, Paper, Typography } from '@mui/material';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { emptyPanel } from '../api/api';
 
@@ -11,12 +11,14 @@ const PanelCard = ({ panel }) => { if(panel != null && panel.panelName != '')  {
         <div className='LGF' style={{float: 'left', fontSize: '1.5em', textShadow: textShadowStyle}}>
             {panel.panelName}
         </div>
-        <div className='LGF' style={{float: 'right', fontSize: '1em', marginTop: '.25em'}}>
-            {panel.location.length == 1 ? `Panel Room ${panel.location}` : panel.location}
-            
-        </div>
+        <Button style={{float: 'right', fontSize: '1em', marginBottom: '.5em', backgroundColor: `${panel.displayColor == '#FFDE59' ? '#5CE1E6' : '#FFDE59'}`}}>
+            <div className='LGF' style={{color: 'black'}}>
+                {panel.location.length == 1 ? `Panel Room ${panel.location}` : panel.location}
+                
+            </div>
+        </Button>
         <Paper style={{float: 'left', width: '95%', backgroundColor:'white', borderRadius: '10px'}}>
-            <div style={{margin: '10px', float: 'unset'}}>{panel.description}</div>
+            <div style={{margin: '10px', float: 'unset'}}>{panel.description.replaceAll('+|+', ',')}</div>
             <br/>
             <b>Presented by: </b>{panel.panelRunner}
         </Paper>

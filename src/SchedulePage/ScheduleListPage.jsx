@@ -56,7 +56,7 @@ const ScheduleListPage = ({ schedule, days, selectedDay, setDay }) => {
         <>
           {days.map((day) => {
               return <Button onClick={() => changeDay(day)} style={{...dayButtonStyle, backgroundColor: day === selectedDay ? "#5CE1E6" : "#FFDE59"}}>
-                  <div className='LGF' style={{ fontSize: '1.2em' }} >{day}</div>
+                  <div className='LGF' style={{ fontSize: '1.35em' }} >{day}</div>
               </Button>
           })}
         </>

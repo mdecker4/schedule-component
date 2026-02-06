@@ -26,23 +26,24 @@ const parseCSV = (csvText) => {
 const buildScheduleArray = (csvArray) => {
     if(csvArray.length > 0)
     {
-        const scheduleArray = [];        
-        csvArray.forEach(p => {
-            scheduleArray.push({
-                panelName: p[0],
-                description: p[1],
-                panelRunner: p[2],
-                startTime: p[3],
-                duration: p[4],
-                location: p[5],
-                ageRating: p[6],
-                displayColor: p[7],
-                spanAll: p[8],
-                scheduleDay: p[9],
-                catagory: p[10],
-                ribbon: p[11]
-            })
+      const scheduleArray = [];        
+      csvArray.forEach(p => {
+        scheduleArray.push({
+          panelName: p[0],
+          description: p[1],
+          panelRunner: p[2],
+          startTime: p[3],
+          duration: p[4],
+          location: p[5],
+          ageRating: p[6],
+          displayColor: p[7],
+          spanAll: p[8],
+          scheduleDay: p[9],
+          catagory: p[10],
+          ribbon: p[11]
+          })
         });
+        // scheduleArray.forEach(s => s.description = s.description.replace('+|+', ','))
         return scheduleArray;
     }
     return [];
