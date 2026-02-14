@@ -211,7 +211,7 @@ const dayButtonStyle = {
           </tr>
         </thead>
         <tbody>
-          {timeSlots.map((time) => (
+          {timeSlots.reverse().map((time) => (
             <tr key={time} style={{height: '100px', maxHeight: '100px'}}>
               <td><strong>{convertMilitaryTime(time)}</strong></td>
               {columns.map((col, colIndex) => {
@@ -223,7 +223,7 @@ const dayButtonStyle = {
                     <td style={{maxHeight: '100px'}} key={col} rowSpan={cell.span} colSpan={cell.fullWidth && colIndex === 0 && columnToggle != 2 ? columns.length : null}>
                       {
                         <>
-                            <Button onClick={() => toggleModal(cell.content)} style={{...panelEntryStyle, backgroundColor: cell.content.displayColor, lineHeight: '1.2em'}}>
+                            <Button onClick={() => toggleModal(cell.content)} style={{...panelEntryStyle, backgroundColor: cell.content.displayColor, lineHeight: '1.2em', zIndex: cell.content.zindexOverride ?? 0 }}>
                               {cell.content.ribbon ? 
                               <div style={{ position: 'absolute', top: 2, right: 2}}>
                                 <Tooltip title="Chance to earn a Ribbon">
@@ -234,6 +234,12 @@ const dayButtonStyle = {
                               <div className='LGF' style={{ fontSize: '1.2em' }} >
                                   {cell.content.panelName}
                               </div>
+                              {
+                                cell.content.ageRating.includes('18') ? 
+                                <div style={{position: 'absolute', bottom: 0, right: 3, fontSize: '.75em'}}>
+                                  +18 Only
+                                </div> : null
+                              }
                             </Button>
                         </>
                       }
