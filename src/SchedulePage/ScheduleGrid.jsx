@@ -211,7 +211,7 @@ const dayButtonStyle = {
           </tr>
         </thead>
         <tbody>
-          {timeSlots.reverse().map((time) => (
+          {timeSlots.map((time) => (
             <tr key={time} style={{height: '100px', maxHeight: '100px'}}>
               <td><strong>{convertMilitaryTime(time)}</strong></td>
               {columns.map((col, colIndex) => {
