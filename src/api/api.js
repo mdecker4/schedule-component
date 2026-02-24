@@ -30,8 +30,8 @@ const buildScheduleArray = (csvArray) => {
       csvArray.forEach(p => {
         scheduleArray.push({
           panelName: p[0].replaceAll('+|+', ','),
-          description: p[1],
-          panelRunner: p[2],
+          description: p[1].replaceAll('+|+', ','),
+          panelRunner: p[2].replaceAll('+|+', ','),
           startTime: p[3],
           duration: p[4],
           location: p[5],
@@ -45,7 +45,6 @@ const buildScheduleArray = (csvArray) => {
           zindexOverride: p[15]
           })
         });
-        // scheduleArray.forEach(s => s.description = s.description.replace('+|+', ','))
         return scheduleArray;
     }
     return [];

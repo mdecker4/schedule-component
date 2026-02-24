@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PanelModal from './PanelModal';
 import Button from '@mui/material/Button';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import { convertMilitaryTime, getPreviousTimeSlot } from '../util';
+import { convertMilitaryTime, textShadowStyle } from '../util';
 import { Tooltip } from '@mui/material';
 
 const ScheduleGrid = ({ scheduleText, days, selectedDay, setDay }) => {
@@ -12,7 +12,7 @@ const ScheduleGrid = ({ scheduleText, days, selectedDay, setDay }) => {
   const [modalOpen, setModal] = useState(false);
   const [modalContent, setModalContent] = useState(['Error', 'Error']);
   const panelColumns = ['Main Events','A', 'B', 'C', 'D', 'Workshop'];
-  const eventColumns = ['Maid Cafe', 'Video Game', 'Table Top', 'LARP'];
+  const eventColumns = ['Maid Cafe', 'Video Game', 'Table Top', 'TCG', 'LARP'];
   const [columns, setColumns] = useState(panelColumns);
   const [columnToggle, setColumnToggle] = useState(1);
   const slotDuration = 30; // minutes
@@ -231,7 +231,7 @@ const dayButtonStyle = {
                                 </Tooltip>
                               </div> : 
                               null}
-                              <div className='LGF' style={{ fontSize: '1.2em' }} >
+                              <div className='LGF' style={{ fontSize: '1.2em', textShadow: textShadowStyle }} >
                                   {cell.content.panelName}
                               </div>
                               {

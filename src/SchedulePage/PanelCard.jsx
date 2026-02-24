@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Button, Paper, Typography } from '@mui/material';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import ImageModal from './ImageModal';
+import {textShadowStyle} from '../util'
 
-const textShadowStyle = '-1px -1px 0 #ffffffff, 1px -1px 0 #ffffffff, -1px 1px 0 #ffffffff, 1px 1px 0 #ffffffff'
 
 const PanelCard = ({ panel }) => { if(panel != null && panel.panelName != '')  {
     const [modalOpen, setModal] = useState(false);
@@ -16,7 +16,7 @@ const PanelCard = ({ panel }) => { if(panel != null && panel.panelName != '')  {
     <>
     <ImageModal image={`./${panel.location}.png`} open={modalOpen} handleClose={toggleModal} />
     <Paper elevation={3} style={{float: 'left', width: '90%', marginBottom: '3%', marginLeft: '1%', padding: '1em', backgroundColor: `${panel.displayColor}`, borderRadius: '10px'}}>
-        <div className='LGF' style={{float: 'left', fontSize: '1.5em', textShadow: textShadowStyle}}>
+        <div className={'LGF'} style={{float: 'left', fontSize: '1.5em', textShadow: textShadowStyle}}>
             {panel.panelName}
         </div>
         <Button 
@@ -31,7 +31,11 @@ const PanelCard = ({ panel }) => { if(panel != null && panel.panelName != '')  {
                 panel.imageOverride ? 
                 <div> Hi </div> : 
                 <>
-                    <div style={{margin: '10px', float: 'unset'}}>{panel.description.replaceAll('+|+', ',')}</div>
+                    <div style={{margin: '10px', float: 'unset'}}>
+                        {panel.description.replaceAll('+|+', ',').split('+n+').map(line => (
+                            <div>{line}</div>
+                        ))}
+                    </div>
                     <br/>
                     <b>Presented by: </b>{panel.panelRunner}
                 </>
