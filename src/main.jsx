@@ -18,7 +18,6 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route index element= {<App/>}></Route>
         <Route path= "/schedule" element= {<SchedulePage/>} />
-        <Route path= "/map" element= {<MapPage url='https://docs.google.com/spreadsheets/d/e/2PACX-1vQEqqtCdGQFdyqlq_5c-Om7rmG24kqHTbwBUaGBlBuig_nk-sFmy3PXhfZV6QpiZGGs5ppbntozwIpW/pub?gid=480788257&single=true&output=csv' />}/>
         {/* <Route index element= {<div>Hello</div>}/> */}
       </Routes>
     </HashRouter>
