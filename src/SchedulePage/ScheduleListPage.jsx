@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Paper, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
-import { convertMilitaryTime } from '../util';
+import { convertMilitaryTime, sortByTimes } from '../util';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { Tooltip } from '@mui/material';
 import PanelCard from './PanelCard';
@@ -40,7 +40,7 @@ const ScheduleListPage = ({ schedule, days, selectedDay, setDay }) => {
   const groupScheduleByTime = (schedule) => {
     const grouped = Object.groupBy(schedule, (panel) => panel.startTime)
     setGroupedSchedule(grouped);
-    const times = Object.keys(grouped).sort();
+    const times = sortByTimes(Object.keys(grouped));
     times.pop();
     setTimes(times)
   }
@@ -62,7 +62,7 @@ const ScheduleListPage = ({ schedule, days, selectedDay, setDay }) => {
         </>
         {
             times.map(time => 
-              groupedSchedule[time].filter(x => x.scheduleDay === selectedDay).length > 0 ?
+              groupedSchedule[time] != null && groupedSchedule[time].filter(x => x.scheduleDay === selectedDay).length > 0 ?
                 <div>
                     <div style={{ marginBottom: '.5em', backgroundColor: `${times.indexOf(time)%2 === 0 ? '#4d2881ff' : '#8305ab'}`, borderRadius: '10px', float: 'left', width: '100%'}}>
                         <div style={{float: 'left',  width: '50%'}}>
